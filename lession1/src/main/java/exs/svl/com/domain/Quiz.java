@@ -32,7 +32,19 @@ public class Quiz {
     private List<String> Options;
     private int RightAnswer;
 
-    public Quiz(String question,List<String> options,int rightAnswer){
+    @Override
+    public String toString() {
+        String output = Question + "\n";
+        int count = 0;
+        for (var item : Options){
+           count++;
+           output+=count+" "+item+"\n";
+        }
+        output+="\n";
+        return output;
+    }
+
+    public Quiz(String question, List<String> options, int rightAnswer){
         Question = question;
         Options = options;
         RightAnswer = rightAnswer;

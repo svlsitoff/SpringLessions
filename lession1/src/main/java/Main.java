@@ -1,15 +1,8 @@
 import exs.svl.com.domain.Quiz;
 import exs.svl.com.service.QuizService;
 import exs.svl.com.service.QuizServiceImpl;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Main {
 
