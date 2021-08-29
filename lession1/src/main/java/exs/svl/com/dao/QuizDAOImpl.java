@@ -14,12 +14,14 @@ import java.util.List;
 public class QuizDAOImpl implements QuizDAO {
 
     private  String path;
+    private List<Quiz> Quizzes;
     public QuizDAOImpl(String path) {
+       Quizzes = new ArrayList<>();
        this.path = path;
+       read();
     }
 
-    @Override
-    public List<Quiz> readQuiz()  {
+    public void read()  {
         List<String> opts = new ArrayList<>();
         List<Quiz> quizzes = new ArrayList<>();
         try(Reader reader = new FileReader(path);
@@ -33,9 +35,11 @@ public class QuizDAOImpl implements QuizDAO {
                 String option3 = record.get("Option 3");
                 opts.add(option3);
                 String rightAnswer = record.get("Right option");
-                int right = Integer.parseInt(rightAnswer);
-                Quiz quiz = new Quiz(question,opts,right);
+                List<String> dest =  new ArrayList<String>();
+                dest.addAll(opts);
+                Quiz quiz = new Quiz(question,dest,rightAnswer);
                 quizzes.add(quiz);
+                opts.clear();
             }
         }catch (IOException ex){
             System.out.println("Cannot open file by specify path");
@@ -43,8 +47,15 @@ public class QuizDAOImpl implements QuizDAO {
             System.out.println("Cannot to read specify file");
         }
         if(quizzes.size()>0){
-            return quizzes;
+            Quizzes = quizzes;
         }
-        return null;
+    }
+    @Override
+    public List<Quiz> getQuizzes() {
+        return Quizzes;
+    }
+
+    public void setQuizzes(List<Quiz> quizzes) {
+        Quizzes = quizzes;
     }
 }

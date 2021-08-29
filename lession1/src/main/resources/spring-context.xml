@@ -9,4 +9,7 @@
     <bean id="quizService" class="exs.svl.com.service.QuizServiceImpl">
         <constructor-arg name="dao" ref="quizDAO"/>
     </bean>
+    <bean id="UIService" class="exs.svl.com.service.UIServiceImpl">
+        <constructor-arg name="quizService" ref="quizService"/>
+    </bean>
 </beans>
