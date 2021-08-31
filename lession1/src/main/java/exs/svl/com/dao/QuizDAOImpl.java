@@ -1,54 +1,58 @@
 package exs.svl.com.dao;
 
+import com.opencsv.CSVReader;
 import exs.svl.com.domain.Quiz;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 public class QuizDAOImpl implements QuizDAO {
 
-    private  String path;
+    InputStream is;
     private List<Quiz> Quizzes;
     public QuizDAOImpl(String path) {
-       Quizzes = new ArrayList<>();
-       this.path = path;
-       read();
+
+        try {
+            is = this.getFileFromResourceAsStream("quiz.csv");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        read();
     }
 
     public void read()  {
         List<String> opts = new ArrayList<>();
         List<Quiz> quizzes = new ArrayList<>();
-        try(Reader reader = new FileReader(path);
-            CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim())) {
-            for(CSVRecord record : csvParser) {
-                String question = record.get("Questions");
-                String option1 = record.get("Option 1");
-                opts.add(option1);
-                String option2 = record.get("Option 2");
-                opts.add(option2);
-                String option3 = record.get("Option 3");
-                opts.add(option3);
-                String rightAnswer = record.get("Right option");
-                List<String> dest =  new ArrayList<String>();
-                dest.addAll(opts);
-                Quiz quiz = new Quiz(question,dest,rightAnswer);
-                quizzes.add(quiz);
-                opts.clear();
+
+            try(CSVReader reader = new CSVReader(new InputStreamReader(is))) {
+                String[] nextRecord;
+                while( (nextRecord = reader.readNext())!=null) {
+                    String question = nextRecord[0];
+                    String option1 = nextRecord[1];
+                    opts.add(option1);
+                    String option2 = nextRecord[2];
+                    opts.add(option2);
+                    String option3 = nextRecord[3];
+                    opts.add(option3);
+                    String rightAnswer = nextRecord[4];
+                    List<String> dest =  new ArrayList<String>();
+                    dest.addAll(opts);
+                    Quiz quiz = new Quiz(question,dest,rightAnswer);
+                    quizzes.add(quiz);
+                    opts.clear();
+                }
+            }catch (IOException ex){
+                System.out.println("Cannot open file by specify path");
+            }catch (Exception ex){
+                System.out.println("Cannot to read specify file");
             }
-        }catch (IOException ex){
-            System.out.println("Cannot open file by specify path");
-        }catch (Exception ex){
-            System.out.println("Cannot to read specify file");
-        }
-        if(quizzes.size()>0){
-            Quizzes = quizzes;
-        }
+            if(quizzes.size()>0){
+                Quizzes = quizzes;
+            }
+
+
     }
     @Override
     public List<Quiz> getQuizzes() {
@@ -57,5 +61,35 @@ public class QuizDAOImpl implements QuizDAO {
 
     public void setQuizzes(List<Quiz> quizzes) {
         Quizzes = quizzes;
+    }
+
+    private InputStream getFileFromResourceAsStream(String fileName) {
+
+        // The class loader that loaded the class
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(fileName);
+
+        // the stream holding the file content
+        if (inputStream == null) {
+            throw new IllegalArgumentException("file not found! " + fileName);
+        } else {
+            return inputStream;
+        }
+
+    }
+    private  void printInputStream(InputStream is) {
+
+        try (InputStreamReader streamReader =
+                     new InputStreamReader(is, StandardCharsets.UTF_8);
+             BufferedReader reader = new BufferedReader(streamReader)) {
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
