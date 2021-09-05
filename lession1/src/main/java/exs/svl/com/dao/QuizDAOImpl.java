@@ -4,27 +4,15 @@ import com.opencsv.CSVReader;
 import exs.svl.com.domain.Quiz;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+
 public class QuizDAOImpl implements QuizDAO {
 
-    InputStream is;
-    private List<Quiz> Quizzes;
-    public QuizDAOImpl() {
-
-        try {
-            is = this.getFileFromResourceAsStream("quiz.csv");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        read();
-    }
-
-    public void read()  {
+    public List<Quiz> getQuizzes()  {
         List<String> opts = new ArrayList<>();
         List<Quiz> quizzes = new ArrayList<>();
-
+        InputStream is = getFromFile();
             try(CSVReader reader = new CSVReader(new InputStreamReader(is))) {
                 String[] nextRecord;
                 while( (nextRecord = reader.readNext())!=null) {
@@ -48,47 +36,19 @@ public class QuizDAOImpl implements QuizDAO {
                 System.out.println("Cannot to read specify file");
             }
             if(quizzes.size()>0){
-                Quizzes = quizzes;
+               return quizzes;
             }
-
-
-    }
-    @Override
-    public List<Quiz> getQuizzes() {
-        return Quizzes;
+            return null;
     }
 
-    public void setQuizzes(List<Quiz> quizzes) {
-        Quizzes = quizzes;
-    }
-
-    private InputStream getFileFromResourceAsStream(String fileName) {
-
-        // The class loader that loaded the class
+    private InputStream getFromFile() {
         ClassLoader classLoader = getClass().getClassLoader();
-        InputStream inputStream = classLoader.getResourceAsStream(fileName);
+        InputStream inputStream = classLoader.getResourceAsStream("quiz.csv");
 
-        // the stream holding the file content
         if (inputStream == null) {
-            throw new IllegalArgumentException("file not found! " + fileName);
+            throw new IllegalArgumentException("file not found! " + "quiz.csv");
         } else {
             return inputStream;
-        }
-
-    }
-    private  void printInputStream(InputStream is) {
-
-        try (InputStreamReader streamReader =
-                     new InputStreamReader(is, StandardCharsets.UTF_8);
-             BufferedReader reader = new BufferedReader(streamReader)) {
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

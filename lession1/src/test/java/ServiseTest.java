@@ -13,4 +13,8 @@ public class ServiseTest {
         QuizService service = new QuizServiceImpl(dao);
         assertEquals(dao.getQuizzes(), service.getAllQuestions());
     }
+    @Test
+    void PersonServise(){
+
+    }
 }

@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Scanner;
 public class UIServiceImpl implements UIService {
 
-    private List<Quiz> Quizzes;
-    private Person person;
+    private final List<Quiz> Quizzes;
+    private final Person person;
     private int  correctAnswers;
     public UIServiceImpl(QuizService quizService, PersonService personService){
         this.Quizzes = quizService.getAllQuestions();
@@ -26,16 +26,19 @@ public class UIServiceImpl implements UIService {
                     correctAnswers++;
                 }
             }
-            Finish();
+            System.out.println("Вы дали "+correctAnswers + " правильных ответов из "+Quizzes.size());
         }catch (NullPointerException ex){
             System.out.println("Не удалось корректно прочитать файл");
         }catch (Exception ex){
             System.out.println(ex.getMessage());
         }
+        TestedPersonInfo();
     }
-    private void Finish(){
-        System.out.println("Участник тестирования :" +person.toString() );
-        System.out.println("Вы дали "+correctAnswers + " правильных ответов из "+Quizzes.size());
-
+    private void TestedPersonInfo(){
+        try{
+            System.out.println("Участник тестирования :" +person.toString() );
+        }catch (NullPointerException ex){
+            System.out.println("Участник тестирования :\n неизвестен");
+        }
     }
 }

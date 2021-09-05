@@ -2,15 +2,13 @@ package exs.svl.com.service;
 
 import exs.svl.com.dao.QuizDAO;
 import exs.svl.com.domain.Quiz;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 public class QuizServiceImpl implements QuizService {
 
-    private List<Quiz> Quizzes;
+    private final List<Quiz> Quizzes;
 
     public QuizServiceImpl(QuizDAO dao){
-
         Quizzes = dao.getQuizzes();
     }
     @Override

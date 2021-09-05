@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ServiceConfig {
 
-
     @Bean
     PersonService personService(PersonDAO personDAO){
         return new PersonServiceImpl(personDAO);

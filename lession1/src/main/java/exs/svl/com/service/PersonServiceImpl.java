@@ -5,7 +5,7 @@ import exs.svl.com.domain.Person;
 
 public class PersonServiceImpl implements PersonService {
 
-    private Person person;
+    private final Person person;
     public PersonServiceImpl(PersonDAO dao){
         person = dao.getPerson();
     }
