@@ -7,12 +7,11 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-
 public class QuizDAOImpl implements QuizDAO {
 
     InputStream is;
     private List<Quiz> Quizzes;
-    public QuizDAOImpl(String path) {
+    public QuizDAOImpl() {
 
         try {
             is = this.getFileFromResourceAsStream("quiz.csv");

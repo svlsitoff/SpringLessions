@@ -1,17 +1,18 @@
 package exs.svl.com.service;
 
+import exs.svl.com.domain.Person;
 import exs.svl.com.domain.Quiz;
 
 import java.util.List;
 import java.util.Scanner;
-
 public class UIServiceImpl implements UIService {
 
-   private List<Quiz> Quizzes;
-   private int  correctAnswers;
-
-    public UIServiceImpl(QuizService quizService){
+    private List<Quiz> Quizzes;
+    private Person person;
+    private int  correctAnswers;
+    public UIServiceImpl(QuizService quizService, PersonService personService){
         this.Quizzes = quizService.getAllQuestions();
+        this.person = personService.getPerson();
     }
     @Override
     public void DisplayQuiz() {
@@ -33,6 +34,8 @@ public class UIServiceImpl implements UIService {
         }
     }
     private void Finish(){
+        System.out.println("Участник тестирования :" +person.toString() );
         System.out.println("Вы дали "+correctAnswers + " правильных ответов из "+Quizzes.size());
+
     }
 }

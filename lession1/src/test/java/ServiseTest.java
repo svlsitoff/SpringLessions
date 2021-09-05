@@ -5,11 +5,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class QuizServiseTest {
+public class ServiseTest {
 
     @Test
     void getSimpleQuiz() {
-        QuizDAOImpl dao = new QuizDAOImpl("src/main/resources/quiz.csv");
+        QuizDAOImpl dao = new QuizDAOImpl();
         QuizService service = new QuizServiceImpl(dao);
         assertEquals(dao.getQuizzes(), service.getAllQuestions());
     }
