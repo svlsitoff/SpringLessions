@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
     <bean id="quizDAO" class="exs.svl.com.dao.QuizDAOImpl">
-        <constructor-arg  value="src/main/resources/quiz.csv"/>
+        <constructor-arg  value="src\main\resources\quiz.csv"/>
     </bean>
     <bean id="quizService" class="exs.svl.com.service.QuizServiceImpl">
         <constructor-arg name="dao" ref="quizDAO"/>
