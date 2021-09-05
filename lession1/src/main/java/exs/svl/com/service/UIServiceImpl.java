@@ -1,17 +1,18 @@
 package exs.svl.com.service;
 
+import exs.svl.com.domain.Person;
 import exs.svl.com.domain.Quiz;
 
 import java.util.List;
 import java.util.Scanner;
-
 public class UIServiceImpl implements UIService {
 
-   private List<Quiz> Quizzes;
-   private int  correctAnswers;
-
-    public UIServiceImpl(QuizService quizService){
+    private final List<Quiz> Quizzes;
+    private final Person person;
+    private int  correctAnswers;
+    public UIServiceImpl(QuizService quizService, PersonService personService){
         this.Quizzes = quizService.getAllQuestions();
+        this.person = personService.getPerson();
     }
     @Override
     public void DisplayQuiz() {
@@ -25,14 +26,19 @@ public class UIServiceImpl implements UIService {
                     correctAnswers++;
                 }
             }
-            Finish();
+            System.out.println("Вы дали "+correctAnswers + " правильных ответов из "+Quizzes.size());
         }catch (NullPointerException ex){
             System.out.println("Не удалось корректно прочитать файл");
         }catch (Exception ex){
             System.out.println(ex.getMessage());
         }
+        TestedPersonInfo();
     }
-    private void Finish(){
-        System.out.println("Вы дали "+correctAnswers + " правильных ответов из "+Quizzes.size());
+    private void TestedPersonInfo(){
+        try{
+            System.out.println("Участник тестирования :" +person.toString() );
+        }catch (NullPointerException ex){
+            System.out.println("Участник тестирования :\n неизвестен");
+        }
     }
 }
